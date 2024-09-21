@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		https://www.springframework.org/schema/security/oauth2 https://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd">
+	
+	<bean id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="customuserdetailservice2"
+		class="org.webservice.security.customuserdetailservice2"></bean>
+	<bean id="loginsuccesshandler" 
+	class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	<property name="defaultTargetUrl" value="/board/listboard"/>
+	</bean>
+	<security:http auto-config="true">
+		
+	<security:intercept-url pattern="/board/listboard" access="permitAll" />	
+	<security:intercept-url pattern="/board/readBoard" access="permitAll" />
+	
+	<security:intercept-url pattern="/board/createBoard" access="hasAuthority('common')"/>
+	<security:intercept-url pattern="/board/createBoardlist" access="hasAuthority('admin')"/>
+	<security:intercept-url pattern="/board/removeBoardlist" access="hasAuthority('master')"/>
+	<security:intercept-url pattern="/mypage" access="isAuthenticated()"/>
+	<security:intercept-url pattern="/board/updateBoard" access="isAuthenticated()"/>
+	
+        <security:csrf disabled="true" />
+        
+		<security:form-login username-parameter="id" password-parameter="passwd" login-page="/loginboard" login-processing-url="/loginaction" 
+		authentication-failure-url="/loginerror" authentication-success-handler-ref="loginsuccesshandler" />
+		<security:logout logout-url="/logoutaction" invalidate-session="true"/>
+	
+		<!--  <security:remember-me
+			data-source-ref="dataSource" token-validity-seconds="604800" />
+			-->
+			
+	</security:http>
+		<security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="customuserdetailservice2">
+			
+			<security:password-encoder
+				ref="bcryptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+</beans>

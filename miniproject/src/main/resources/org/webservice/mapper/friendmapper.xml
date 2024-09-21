@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="org.webservice.mapper.friendmapper">
+	<select id="listfriend" resultType="org.webservice.domain.friend">
+		select * from pro_friend where userid=#{userid}
+	</select>
+	<insert id="insertfriend">
+		insert into pro_friend values(#{friend_code},#{userid},#{fuserid},sysdate)
+	</insert>
+	<delete id="deletefriend">
+		delete from pro_friend where friend_code=#{friend_code}
+	</delete>
+	
+	<insert id="createroom">
+		insert into pro_chatroom values(#{chatroom_code},#{chatroom_title},#{regid},sysdate)
+	</insert>
+	<delete id="deleteroom">
+		delete from pro_chatroom where chatroom_code=#{chatroom_code}
+	</delete>
+	<delete id="deleteallroom">
+		delete from pro_chatroom
+	</delete>
+	<select id="allchatroom" resultType="org.webservice.domain.chatroom">
+		select * from pro_chatroom
+	</select>
+	<select id="getchatroom" resultType="org.webservice.domain.chatroom">
+		select * from pro_chatroom where chatroom_code=#{chatroom_code}
+	</select>
+</mapper>

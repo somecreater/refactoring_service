@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.webservice.mapper.filemapper">
+
+ <select id="getlistfile" resultType="org.webservice.domain.attachfile">
+  	select * from pro_file where bno=#{bno}
+ </select>
+ <insert id="insertfile">
+ 	insert into pro_file (uuid, uploadPath, fileName, bno, image) 
+ 	values(#{uuid},#{uploadPath},#{fileName},#{bno},#{image})
+ </insert>
+ <delete id="deletefile">
+ 	delete from pro_file where uuid=#{uuid}
+ </delete>
+ <delete id="deleteallfile">
+ 	delete from pro_file where bno=#{bno}
+ </delete>
+ 
+ <select id="getoldfile" resultType="org.webservice.domain.attachfile">
+ 	select * from pro_file where uploadpath=to_char(sysdate-1,'yyyy/mm/dd')
+ </select>
+ 
+ 
+ 
+ <select id="getmemberfilebycode" resultType="org.webservice.domain.memberfile">
+ select * from pro_member_file where pro_mem_file_code=#{pro_mem_file_code}
+ </select>
+ 
+ <select id="getmemberfilelist" resultType="org.webservice.domain.memberfile">
+ select * from pro_member_file where userid=#{userid} order by regdate desc
+ </select>
+ 
+ <select id="getmemberfilebybno" resultType="org.webservice.domain.memberfile">
+ select * from pro_member_file where bno=#{bno} order by regdate
+ </select>
+ 
+ <update id="updatememfile">
+ update pro_member_file set bno=#{bno} where pro_mem_file_code=#{pro_mem_file_code}
+ </update>
+ <insert id="insertmemfile">
+ insert into pro_member_file values(#{pro_mem_file_code},#{userid},#{uuid},#{uploadPath},#{fileName},#{image},null,sysdate)
+ </insert>
+ 
+ <delete id="deletememfile">
+ delete from pro_member_file where pro_mem_file_code=#{pro_mem_file_code}
+ </delete>
+ 
+ <delete id="deletememfilebybno">
+ delete from pro_member_file where bno=#{bno}
+ </delete>
+ 
+ <delete id="deletememfileall">
+ delete from pro_member_file where userid=#{userid}
+ </delete>
+ 
+ 
+ <delete id="memdeletefile">
+ delete from pro_member_file where filename=#{filename} and uuid=#{uuid}
+ </delete>
+ 
+</mapper>

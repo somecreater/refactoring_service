@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.webservice.mapper.boardmapper">
+  	
+  	<sql id="search">
+  		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+  			<foreach item="type" collection="typeArr">
+  			<trim prefix="OR">
+  				<choose>
+  					<when test="type=='T'.toString()">
+  					title like '%'||#{keyword}||'%'
+  					</when>
+  					<when test="type=='C'.toString()">
+  					content like '%'||#{keyword}||'%'
+  					</when>
+  					<when test="type=='W'.toString()">
+  					writer like '%'||#{keyword}||'%'
+  					</when>
+  					<when test="type=='G'.toString()">
+  					boardname like '%'||#{keyword}||'%'
+  					</when>
+  				</choose>
+  				</trim>
+  			</foreach>
+  		</trim>
+  	</sql>
+  	
+  	<insert id="banusers">
+  	<selectKey keyProperty="bannum" order="BEFORE" resultType="long">
+  	select seq_pro_ban.nextval from dual
+  	</selectKey>
+	INSERT into pro_ban 
+	values(#{bannum}, #{userid},#{banreason},sysdate,sysdate+#{period} )
+  	</insert>
+  	<delete id="banuserrealease">
+  	delete from pro_ban where userid=#{userid}
+  	</delete>
+  	<update id="banusersadd">
+  	update pro_member set enabled=0 where userid=#{userid}
+  	</update>
+  	<update id="bansuerrealeaseadd">
+  	update pro_member set enabled=1 where userid=#{userid}
+  	</update>
+  	<select id="banselect" resultType="int">
+  	select count(*) from pro_ban where (userid=#{userid}) and (sysdate between startdate and enddate)
+  	</select>
+  	<select id="getbanlist" resultType="org.webservice.domain.banuser">
+  	select * from pro_ban
+  	</select>
+  	<select id="getbanuser" resultType="org.webservice.domain.banuser">
+  	select * from pro_ban where userid=#{userid}
+  	</select>
+  	<select id="getauthdescription" resultType="org.webservice.domain.auth_description">
+  	select * from pro_authlist
+  	</select>
+  	
+  	
+  	<select id="selectboardlistset" resultType="org.webservice.domain.boardlist">
+	select * from pro_board_list order by boardnum   	
+  	</select>
+  	<select id="selectboardlist" resultType="String">
+  	select boardname from pro_board_list
+  	</select>
+  	<select id="select_boardaouth" resultType="String">
+  	select REGUSERID from pro_board_list where boardname=#{boardname}
+  	</select>
+  	<select id="select_boardaouthbyname" resultType="String">
+  	select userid from pro_member_auth where auth=#{auth}
+  	</select>
+  	<delete id="deleteboardbyid">
+  	delete from pro_board where writer=#{userid}
+  	</delete>
+  	<select id="getboardlistbynum" resultType="org.webservice.domain.boardlist">
+  	select * from pro_board_list where boardnum=#{boardnum}
+  	</select>
+  	<select id="getboardlistbyname" resultType="org.webservice.domain.boardlist">
+  	select * from pro_board_list where boardname=#{boardname}
+  	</select>
+  	<insert id="createboard">
+  	<selectKey keyProperty="boardnum" order="BEFORE" resultType="Long">
+  	select seq_pro_board_list.nextval from dual
+  	</selectKey>
+  	insert into pro_board_list(boardnum, boardname, regdate, reguserid, boardsubject)
+  	values(#{boardnum}, #{boardname}, sysdate, #{reguserid}, #{boardsubject})
+  	</insert>
+  	<update id="updateboardlist">
+  	update pro_board_list set boardsubject=#{boardsubject} where boardnum=#{boardnum}
+  	</update>
+  	<delete id="deleteaouthboard">
+    delete from pro_member_auth where auth=#{auth} and userid=#{userid}
+  	</delete>
+  	<insert id="aouthboard">
+   	insert into pro_member_auth values(#{userid},#{auth})
+  	</insert>
+  	<select id="getauthbyid" resultType="org.webservice.domain.auth">
+  	select * from pro_member_auth where userid=#{userid}
+  	</select>
+  	<delete id="board_delete">
+  	delete from pro_board_list where boardname=#{boardname}
+  	</delete>
+  	
+  	<select id="readboard" resultType="org.webservice.domain.board">
+  	select * from pro_board where bno = #{bno}
+  	</select>
+  	<select id="getlistboard" resultType="org.webservice.domain.board">
+  	<![CDATA[
+  	select * from pro_board 
+  	where bno>0 and rownum<=100
+  	]]>
+  	</select>
+  	<select id="getlistsearchboard" resultType="org.webservice.domain.board">
+  	<![CDATA[
+  	select * 
+  	from 
+  	(
+  	select /*+INDEX_DESC(pro_board SYS_C0033769) */
+  	rownum rn, bno, boardname, title,content,writer,regdate,udate,comment_num
+  	from pro_board 
+  	where 
+  	]]>
+  	<include refid="search"> </include>
+  	<![CDATA[
+  	rownum<=#{pageNum} * #{amount}
+  	)
+  	where rn>(#{pageNum}-1) * #{amount}
+  	]]>
+  	</select>
+  	<select id="getlistboardbyid" resultType="org.webservice.domain.board">
+  	select * from pro_board where writer=#{userid} order by regdate desc
+  	</select>
+  	<select id="getcntbyid" resultType="int">
+  	select count(*) from pro_board where writer=#{userid}
+  	</select>
+  	<select id="getlistboardbybrdname" resultType="org.webservice.domain.board">
+  	select * from pro_board where boardname=#{boardname}
+  	</select>
+  	
+  	<delete id="deleteboard">
+  	delete from pro_board where bno=#{bno}
+  	</delete>
+  	<delete id="deleteboardbyname">
+  	delete from pro_board where boardname=#{boardname}
+  	</delete>
+  	<insert id="insertboard">
+  	<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+  	select seq_pro_board.nextval from dual
+  	</selectKey>
+  	insert into pro_board 
+  	values(#{bno},#{boardname},#{title},#{content},#{writer},sysdate,sysdate,0)
+  	</insert>
+  	<update id="updateboard">
+  	update pro_board set title=#{title},content=#{content},writer=#{writer},udate=sysdate where bno=#{bno}
+  	</update>
+  	
+  	
+  	<update id="updatecmtcnt">
+  	update pro_board set comment_num=comment_num+#{amount} where bno=#{bno}
+  	</update>
+  	<select id="gettotalcntboard" resultType="int">
+  	select count(*) from pro_board where
+  	<include refid="search"></include>
+  	bno>0
+  	</select>
+  	<select id="findfilebybno" resultType="org.webservice.domain.attachfile">
+  	select * from pro_file where bno=#{bno}
+  	</select>
+  </mapper>

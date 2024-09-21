@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="org.webservice.mapper.membermapper">
+  	
+  	<resultMap type="org.webservice.domain.auth" id="authmap">
+    	<result property="userid" column="userid"/>
+    	<result property="auth" column="auth"/>
+  	</resultMap>
+  	
+  	
+  	
+  	<select id="readmember" resultType="org.webservice.domain.member">
+  	select * from pro_member where userid=#{userid}
+  	</select>  	
+  	<select id="readmembername" resultType="String">
+  	select username from pro_member where userid=#{userid}
+  	</select>
+  	<select id="memberlist" resultType="org.webservice.domain.member">
+  	select * from pro_member order by regdate desc
+  	</select>
+  	<delete id="deleteauthbyid">
+  	delete from pro_member_auth where userid=#{userid}
+  	</delete>
+  	<select id="readauth" resultMap="authmap">
+  	select * from pro_member_auth where userid=#{userid}
+  	</select>
+  	<insert id="insertauth">
+  	insert into pro_member_auth values(#{userid},#{auth})
+  	</insert>
+  	<delete id="deleteauth">
+  	delete from pro_member_auth where userid=#{userid} and auth=#{auth}
+  	</delete>
+  	<insert id="insertmember">
+  	insert into pro_member values(#{userid},#{userpw},#{username},sysdate,sysdate,1,#{phone})
+  	</insert>
+  	<update id="updatemember">
+  	update pro_member set userpw=#{userpw},username=#{username},udate=sysdate,phone=#{phone} where userid=#{userid}
+  	</update>
+  	<delete id="deletemember">
+  	delete from pro_member where userid=#{userid}
+  	</delete>
+  	<select id="checkmember" resultType="org.webservice.domain.member">
+  	select * from pro_member where userid=#{userid} and userpw=#{userpw}
+  	</select>
+  	
+  	<select id="readmemberetc" resultType="org.webservice.domain.member_info_etc">
+  	select * from pro_member_etc where userid=#{userid}
+  	</select>
+  	
+  	<insert id="insertmemberetc">
+  	<selectKey keyProperty="member_etc" order="BEFORE" resultType="Long">
+  	select seq_pro_member_etc.nextval from dual
+  	</selectKey>
+  	insert into pro_member_etc values(#{member_etc},#{userid},#{mail},#{birth_date},#{about_me},sysdate,sysdate)
+  	</insert>
+  	
+  	<update id="updatememberetc">
+  	update pro_member_etc set mail=#{mail}, birth_date=#{birth_date}, about_me=#{about_me}, udate=sysdate where userid=#{userid}
+  	</update>
+  	<delete id="deletememberetc">
+  	delete from pro_member_etc where userid=#{userid}
+  	</delete>
+  	<select id="getmemberid" resultType="String">
+  	select userid from pro_member_etc where mail=#{mail}
+  	</select>
+  	<select id="getmemberidbyphone" resultType="String">
+  	select userid from pro_member where phone=#{phone}
+  	</select>
+  </mapper>
