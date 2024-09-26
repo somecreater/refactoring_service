@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -29,7 +30,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @RequiredArgsConstructor
-@Log4j
+@Slf4j
 public class communicationcontroller {
 
 	@Setter(onMethod_=@Autowired)

@@ -11,17 +11,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.activation.DataHandler;
-import javax.mail.Address;
-import javax.mail.Flags;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -14,6 +14,7 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +40,7 @@ import org.webservice.mapper.boardmapper;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
-@Log4j
+@Slf4j
 @Service
 public class boardserviceImpl implements boardservice{
 

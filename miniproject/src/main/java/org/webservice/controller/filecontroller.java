@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -44,7 +45,7 @@ import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
-@Log4j
+@Slf4j
 public class filecontroller {
 
 	@Autowired
@@ -220,7 +221,7 @@ public class filecontroller {
 		String orifileuri=URLDecoder.decode(fileuri, "UTF-8");
 		Resource resource=new FileSystemResource("D:\\server\\temp\\"+orifileuri);
 		
-		log.info(resource.getURI());
+		//log.info(resource.getURI());
 		
 		String orignalfilename=resource.getFilename();
 		

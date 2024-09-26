@@ -1,6 +1,5 @@
 package org.webservice.websocket;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

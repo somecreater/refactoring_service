@@ -1,10 +1,10 @@
 package org.webservice.security;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +16,7 @@ import org.webservice.mapper.membermapper;
 
 import lombok.extern.log4j.Log4j;
 
-@Log4j
+@Slf4j
 public class customuserdetailservice2 implements UserDetailsService{
 
 	@Autowired

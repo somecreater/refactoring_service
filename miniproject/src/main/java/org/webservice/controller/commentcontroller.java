@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/comment/*")
-@Log4j
+@Slf4j
 public class commentcontroller {
 	
 	

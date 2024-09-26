@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -49,7 +50,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @RequestMapping("/board/*")
 @AllArgsConstructor
-@Log4j
+@Slf4j
 public class boardcontroller {
 	
 	private static final String[] masteruserid= {"test123","user11","masteruser"};
@@ -161,7 +162,7 @@ public class boardcontroller {
 		brdlist=bservice.getListbyboardname(brdname);
 		if(brdlist!=null){
 			for(board b:brdlist) {
-				log.info(b.getBno());
+				//log.info(b.getBno());
 				log.info(bservice.getfilelist(b.getBno()).get(0).getFileName());
 				Filedelete(bservice.getfilelist(b.getBno()));
 			}
@@ -234,9 +235,9 @@ public class boardcontroller {
 	@PreAuthorize("principal.username == #board.writer")
 	@PostMapping("/removeBoard")
 	public String removeBoard(@RequestParam final Long bno, boardsearch search, RedirectAttributes rttr) {
-		log.info(bno);
+		//log.info(bno);
 		Filedelete(bservice.getfilelist(bno));
-		log.info(bservice.getfilelist(bno).size());
+		//log.info(bservice.getfilelist(bno).size());
 		bservice.deletefilelist(bno);
 		bservice.deleteboard(bno);
 		rttr.addFlashAttribute("result", "success");

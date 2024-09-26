@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import javax.naming.spi.DirStateFactory.Result;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +48,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Controller
-@Log4j
+@Slf4j
 public class securitycontroller {
 
 	//@Autowired
