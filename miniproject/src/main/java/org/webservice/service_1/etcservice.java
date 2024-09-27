@@ -1,6 +1,5 @@
 package org.webservice.service_1;
 
-import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 

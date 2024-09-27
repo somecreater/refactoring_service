@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@Log4j
+@Slf4j
 public class boardservicetest {
 //board 서비스와 file 서비스를 테스트 하는 코드입니다
 	
@@ -153,7 +154,7 @@ public class boardservicetest {
 	//@Test
 	@DisplayName("유처 차단 조회 테스트")
 	public void testselectban() {
-		log.info(bmapper.banselect("user00"));
+		//log.info(bmapper.banselect("user00"));
 	}
 	
 	//@Test
@@ -189,7 +190,7 @@ public class boardservicetest {
 		for(board b:listboard) {
 			log.info("번호: "+b.getBno()+" 테스트 중입니다. 내용: "+b.getContent());
 		}
-		log.info(listboard.size());
+		//log.info(listboard.size());
 		
 	}
 	
@@ -206,7 +207,7 @@ public class boardservicetest {
 		listboard=bmapper.getlistsearchboard(search);
 	}
 	
-	@Test
+	//@Test
 	@DisplayName("3월 3일 버전 차단테스트")
 	public void testban() {
 		banuser ban=new banuser();

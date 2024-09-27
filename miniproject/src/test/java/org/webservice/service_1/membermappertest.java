@@ -3,6 +3,7 @@ package org.webservice.service_1;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import lombok.extern.log4j.Log4j;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml","file:src/main/webapp/WEB-INF/spring/security-context.xml"})
-@Log4j
+@Slf4j
 public class membermappertest {
 	
 	@Setter(onMethod_=@Autowired)

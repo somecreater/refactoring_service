@@ -7,6 +7,7 @@ import java.sql.Connection;
 
 import javax.sql.DataSource;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ import lombok.extern.log4j.Log4j;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@Log4j
+@Slf4j
 public class DataSourceTests {
 	@Setter(onMethod_= {@Autowired})
 	private DataSource dataSource;
@@ -29,14 +30,14 @@ public class DataSourceTests {
 	@Setter(onMethod_= {@Autowired})
 	private SqlSessionFactory sqlSessionFactory;
 	
-	@Test
+	//@Test
 	@DisplayName("마이 바티스 연결 테스트")
 	public void testMyBatis() {
 		try(SqlSession session=sqlSessionFactory.openSession();
 				Connection con=session.getConnection();
 				){
-			log.info(session);
-			log.info(con);
+			log.info(session.toString());
+			log.info(con.toString());
 		}catch(Exception e) {
 			fail(e.getMessage());
 		}

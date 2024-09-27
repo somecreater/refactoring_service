@@ -3,6 +3,7 @@ package org.webservice.service_1;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,7 @@ import lombok.extern.log4j.Log4j;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-@Log4j
+@Slf4j
 public class commentcservicetest {
 
 	@Setter(onMethod_= {@Autowired})
@@ -37,7 +38,7 @@ public class commentcservicetest {
 		cmt.setComments("이것은 테스트용 댓글입니다");
 		cmapper.insertcomment(cmt);
 		bmapper.updatecmtcnt(cmt.getBno(), 1);
-		log.info(cmapper.getcountcomment(50L));
+		//log.info(cmapper.getcountcomment(50L));
 	}
 	
 	//@Test
@@ -51,7 +52,7 @@ public class commentcservicetest {
 	public void testcommentupdate() {
 		comment cmt=cmapper.readcomment(3L);
 		cmt.setComments("수정된 댓글 입니다");
-		log.info(cmapper.updatecomment(cmt));
+		//log.info(cmapper.updatecomment(cmt));
 	}
 	
 	//@Test

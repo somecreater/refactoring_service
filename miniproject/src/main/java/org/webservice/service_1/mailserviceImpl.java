@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Random;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,7 +34,7 @@ import com.google.api.services.gmail.model.Message;
 
 //이메일 서버오류로 구현 실패
 //나중에 추후 구현
-@Log4j
+@Slf4j
 @Service
 public class mailserviceImpl implements mailservice{
 	
