@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 import org.webservice.config.DataBaseConfig;
 import org.webservice.config.SecurityConfig;
 
-@SpringBootApplication(scanBasePackages = {"org.webservice.config","org.webservice.service_1"})
+@SpringBootApplication(scanBasePackages = {"org.webservice.config"})
 @Import({DataBaseConfig.class, SecurityConfig.class})
 public class RefactoringApplication {
     public static void main(String[] args){
