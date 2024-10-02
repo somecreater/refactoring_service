@@ -1,13 +1,11 @@
 package org.webservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,6 +24,10 @@ public class MemberEntity {
     private Date udate;
     private boolean enabled;
 
+
     @OneToOne(mappedBy = "member")
     private AuthEntity auth;
+
+    @OneToMany(mappedBy = "memberEntity", fetch = FetchType.LAZY)
+    private List<BoardEntity> boardEntities;
 }
