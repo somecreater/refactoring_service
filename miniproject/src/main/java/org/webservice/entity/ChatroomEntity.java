@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "")
+@Table(name = "chatroom")
 public class ChatroomEntity {
+
 }
