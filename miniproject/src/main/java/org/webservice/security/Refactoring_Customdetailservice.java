@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.webservice.entity.AuthEntity;
 import org.webservice.entity.MemberEntity;
@@ -31,6 +30,7 @@ public class Refactoring_Customdetailservice implements UserDetailsService {
         Optional<AuthEntity> optionalauth = authRepository.findById(member.getUserid());
         String memberauth = optionalauth.map(AuthEntity::getAuth).orElse("common");
 
+        //boardmanager 테이블에서 게시판 관련 권한을 가져오는 코드도 포함 예정
         Refactoring_Customuserdetail customuserdetail
                 = new Refactoring_Customuserdetail(member, AuthorityUtils.createAuthorityList(memberauth));
         log.info("login UserID: {}, TIME: {}", username, LocalDate.now());
