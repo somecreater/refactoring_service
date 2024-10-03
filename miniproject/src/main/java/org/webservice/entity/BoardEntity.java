@@ -16,6 +16,9 @@ public class BoardEntity {
     private String title;
     private String boardtype;
     private String writer;
+
+    private String content;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date regdate;
     @Temporal(TemporalType.TIMESTAMP)
@@ -23,9 +26,6 @@ public class BoardEntity {
 
     private long viscount;
     private int recommendation;
-
-
-    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardtype", referencedColumnName = "boardname", insertable = false, updatable = false)
