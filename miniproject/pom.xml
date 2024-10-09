@@ -141,6 +141,18 @@
             <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
 
+        <!-- Spring Boot Cache-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
+        <!-- Redis Spring Boot Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!-- MySql -->
         <dependency>
             <groupId>com.mysql</groupId>
