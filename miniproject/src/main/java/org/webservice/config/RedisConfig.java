@@ -12,7 +12,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @Slf4j
 @Configuration
 @EnableRedisRepositories(basePackages = {"org.webservice.redis_repository"})
-@EnableConfigurationProperties(RedisProperty.class)
+@EnableConfigurationProperties({RedisProperty.class})
 public class RedisConfig {
 
     private final RedisProperty redisProperty;
@@ -23,7 +23,9 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory(RedisProperty redisProperty){
-        RedisStandaloneConfiguration redisStandaloneConfiguration=new RedisStandaloneConfiguration(redisProperty.getHost(),redisProperty.getPort());
+        RedisStandaloneConfiguration redisStandaloneConfiguration=new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisProperty.getHost());
+        redisStandaloneConfiguration.setPort(redisProperty.getPort());
         redisStandaloneConfiguration.setPassword(redisProperty.getPassword());
         LettuceConnectionFactory lettuceConnectionFactory=new LettuceConnectionFactory(redisStandaloneConfiguration);
         return lettuceConnectionFactory;

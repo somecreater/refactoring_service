@@ -6,4 +6,5 @@ import org.webservice.entity.BoardCacheEntity;
 
 @Repository
 public interface BoardCacheRepository extends CrudRepository<BoardCacheEntity,Long> {
+
 }
