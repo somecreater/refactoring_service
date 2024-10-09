@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
@@ -15,6 +16,7 @@ import java.util.Properties;
 
 @Slf4j
 @Configuration
+@EnableJpaRepositories(basePackages = {"org.webservice.repository"})
 @EnableConfigurationProperties({DataBaseProperty.class, JPAProperty.class})
 public class DataBaseConfig {
 
