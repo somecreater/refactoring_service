@@ -18,6 +18,8 @@ public class RedisProperty {
     @NotEmpty
     private String password;
 
+    public RedisProperty() {}
+
     public RedisProperty(String host, int port,String password){
         this.host=host;
         this.port=port;
