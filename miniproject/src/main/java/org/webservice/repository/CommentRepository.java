@@ -9,7 +9,7 @@ import org.webservice.entity.CommentEntity;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends JpaRepository<BanEntity,Long> {
+public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
         List<CommentEntity> findByWriterContaining(String writer, Pageable pageable);
         List<CommentEntity> findByBnoContaining(Long bno, Pageable pageable);
         List<CommentEntity> findByCommentsContaining(String comments, Pageable pageable);

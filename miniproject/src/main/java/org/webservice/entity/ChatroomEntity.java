@@ -11,8 +11,8 @@ import java.util.Date;
 public class ChatroomEntity {
 
     @Id
-    private String chatroom_code; //"랜덤 UUID"_"채팅방제목"_"날짜"
-    private String chatroom_title;
+    private String chatroomcode; //"랜덤 UUID"_"채팅방제목"_"날짜"
+    private String chatroomtitle;
     private String regid;
     @Temporal(TemporalType.TIMESTAMP)
     private Date regdate;

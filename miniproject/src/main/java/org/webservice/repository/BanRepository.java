@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BanRepository extends JpaRepository<BanEntity,Long> {
-    List<BanEntity> findByUseridcontaining(String userid, Pageable pageable);
+    List<BanEntity> findByUseridContaining(String userid, Pageable pageable);
 }

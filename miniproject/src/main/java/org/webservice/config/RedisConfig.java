@@ -9,6 +9,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Slf4j
 @Configuration
@@ -27,7 +28,10 @@ public class RedisConfig {
         RedisStandaloneConfiguration redisStandaloneConfiguration=new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisProperty.getHost());
         redisStandaloneConfiguration.setPort(redisProperty.getPort());
-        redisStandaloneConfiguration.setPassword(String.valueOf(redisProperty.getPassword()));
+        redisStandaloneConfiguration.setPassword(redisProperty.getPassword());
+
+        log.info("Redis에 연결 중: {}:{}", redisProperty.getHost(), redisProperty.getPort());
+
         LettuceConnectionFactory lettuceConnectionFactory=new LettuceConnectionFactory(redisStandaloneConfiguration);
         return lettuceConnectionFactory;
     }
@@ -36,6 +40,9 @@ public class RedisConfig {
     public RedisTemplate<String,Object> redisTemplate(){
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory(redisProperty));
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+
     return template;
     }
 }

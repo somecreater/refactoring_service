@@ -2,6 +2,7 @@ package org.webservice.config;
 
 import jakarta.servlet.MultipartConfigElement;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @Slf4j
 @EnableWebMvc
-@ComponentScan(basePackages = "org.webservice.controller")
+@EnableConfigurationProperties({SpringProperty.class, SpringProperty2.class, SpringProperty3.class})
+//@ComponentScan(basePackages = "org.webservice.controller")
 public class SpringConfig implements WebMvcConfigurer {
 
 
