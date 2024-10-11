@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 //이미 탈퇴된 아이디
 //이메일 서버오류로 구현 실패
 //나중에 추후 구현
-@Service
+//@Service
 @RequiredArgsConstructor
 public class etcserviceImpl implements etcservice{
 	

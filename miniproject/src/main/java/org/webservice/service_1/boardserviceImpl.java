@@ -41,7 +41,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Slf4j
-@Service
+//@Service
 public class boardserviceImpl implements boardservice{
 
 	@Setter(onMethod_ = @Autowired)

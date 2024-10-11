@@ -35,7 +35,7 @@ import com.google.api.services.gmail.model.Message;
 //이메일 서버오류로 구현 실패
 //나중에 추후 구현
 @Slf4j
-@Service
+//@Service
 public class mailserviceImpl implements mailservice{
 	
 	
