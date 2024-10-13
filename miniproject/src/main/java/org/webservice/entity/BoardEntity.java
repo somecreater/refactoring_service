@@ -3,7 +3,7 @@ package org.webservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,21 +14,20 @@ public class BoardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bno;
     private String title;
-    private String boardtype;
+
+    private String bordcategory;
     private String writer;
 
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date regdate;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date udate;
+    private LocalDateTime regdate;
+    private LocalDateTime udate;
 
     private long viscount;
     private int recommendation;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardtype", referencedColumnName = "boardname", insertable = false, updatable = false)
+    @JoinColumn(name = "bordcategory", referencedColumnName = "boardname", insertable = false, updatable = false)
     private BoardTypeEntity boardTypeEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
