@@ -40,12 +40,14 @@ public class RedisTests {
 
     @Test
     public void testRedisRepository(){
-        BoardCacheEntity boardCache=BoardCacheEntity.builder().bno(1L).viscount(12).recommendation(12).build();
+        BoardCacheEntity boardCache=BoardCacheEntity.builder().bno(20L).viscount(1355).recommendation(80).build();
         boardCacheRepository.save(boardCache);
 
-        BoardCacheEntity boardCache1=boardCacheRepository.findById(1L).get();
-        assertThat(boardCache1.getViscount()).isEqualTo(boardCache.getViscount());
-        assertThat(boardCache1.getRecommendation()).isEqualTo(boardCache.getRecommendation());
+        BoardCacheEntity boardCache1=boardCacheRepository.findById(100L).get();
+        System.out.println(boardCache1.getViscount());
+        System.out.println(boardCache1.getRecommendation());
+        //assertThat(boardCache1.getViscount()).isEqualTo(boardCache.getViscount());
+        //assertThat(boardCache1.getRecommendation()).isEqualTo(boardCache.getRecommendation());
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @Builder
-@RedisHash(value = "board_cache",timeToLive = 20)
+@RedisHash(value = "board_cache")
 public class BoardCacheEntity {
     @Id
     private Long bno;
