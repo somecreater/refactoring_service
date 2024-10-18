@@ -7,7 +7,9 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.webservice.entity.BoardCacheEntity;
+import org.webservice.entity.PermissionEntity;
 import org.webservice.redis_repository.BoardCacheRepository;
+import org.webservice.redis_repository.PermissionRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +24,8 @@ public class RedisTests {
     */
     @Autowired
     private BoardCacheRepository boardCacheRepository;
-
+    @Autowired
+    private PermissionRepository permissionRepository;
     //@Test
     /*
     public void testRedisConnection() {
@@ -38,7 +41,7 @@ public class RedisTests {
     }
     */
 
-    @Test
+    //@Test
     public void testRedisRepository(){
         BoardCacheEntity boardCache=BoardCacheEntity.builder().bno(20L).viscount(1355).recommendation(80).build();
         boardCacheRepository.save(boardCache);
@@ -48,6 +51,16 @@ public class RedisTests {
         System.out.println(boardCache1.getRecommendation());
         //assertThat(boardCache1.getViscount()).isEqualTo(boardCache.getViscount());
         //assertThat(boardCache1.getRecommendation()).isEqualTo(boardCache.getRecommendation());
+    }
+
+    @Test
+    public void testRedisRepository2(){
+        PermissionEntity permission=PermissionEntity.builder().alarmid(11L).userid("tester").content("this is test").alarmtype("test").build();
+        permissionRepository.save(permission);
+
+        PermissionEntity permission1=permissionRepository.findById(11L).get();
+        System.out.println(permission1.getAlarmtype());
+        System.out.println(permission1.getContent());
     }
 
 }
