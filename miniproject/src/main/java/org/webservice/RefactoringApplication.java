@@ -2,13 +2,17 @@ package org.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
-import org.webservice.config.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 @SpringBootApplication(scanBasePackages = {"org.webservice.config"})
-@Import({DataBaseConfig.class, SecurityConfig.class, MailConfig.class,
-        Oauth2Config.class, RedisConfig.class, SpringConfig.class,
-        WebSocketConfig.class})
+@ComponentScan(basePackages = {"org.webservice.config","org.webservice.refactoring_service",
+"org.webservice.security","org.webservice.refactoring_task","org.webservice.refactoring_controller"})
+@EntityScan(basePackages = "org.webservice.entity")
+@EnableWebSecurity
+@EnableWebSocket
 public class RefactoringApplication {
     public static void main(String[] args){
         SpringApplication.run(RefactoringApplication.class,args);

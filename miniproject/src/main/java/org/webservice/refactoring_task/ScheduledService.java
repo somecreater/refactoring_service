@@ -1,4 +1,4 @@
-package org.webservice.task;
+package org.webservice.refactoring_task;
 
 public class ScheduledService {
 
