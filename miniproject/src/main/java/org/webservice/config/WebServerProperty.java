@@ -1,6 +1,7 @@
 package org.webservice.config;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
@@ -10,15 +11,15 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class WebServerProperty {
 
-    @NotEmpty
+    @NotNull
     private int port;
-    @NotEmpty
+    @NotNull
     private int maxthreads;
-    @NotEmpty
+    @NotNull
     private int maxconnections;
-    @NotEmpty
+    @NotNull
     private int minsparethreads;
-    @NotEmpty
+    @NotNull
     private int connectiontimeout;
 
     public WebServerProperty(int port, int maxthreads, int maxconnections, int minsparethreads, int connectiontimeout){
