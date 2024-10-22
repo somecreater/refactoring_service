@@ -7,12 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
-@SpringBootApplication(scanBasePackages = {"org.webservice.config"})
-@ComponentScan(basePackages = {"org.webservice.config","org.webservice.refactoring_service",
-"org.webservice.security","org.webservice.refactoring_task","org.webservice.refactoring_controller"})
+@SpringBootApplication(scanBasePackages = {
+        "org.webservice.config",
+        "org.webservice.refactoring_service",
+        "org.webservice.security",
+        "org.webservice.refactoring_task",
+        "org.webservice.refactoring_controller"
+})
 @EntityScan(basePackages = "org.webservice.entity")
-@EnableWebSecurity
-@EnableWebSocket
 public class RefactoringApplication {
     public static void main(String[] args){
         SpringApplication.run(RefactoringApplication.class,args);
