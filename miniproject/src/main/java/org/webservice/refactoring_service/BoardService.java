@@ -1,5 +1,6 @@
 package org.webservice.refactoring_service;
 
+import org.webservice.Innerdto.SearchDTO;
 import org.webservice.entity.BoardEntity;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface BoardService {
     public boolean DeleteBoard(Long bno);
 
     //board 리스트 읽어오기 및 검색
-    public List<BoardEntity> SearchBoard(String Search);
+    public List<BoardEntity> SearchBoard(SearchDTO Search);
 }
