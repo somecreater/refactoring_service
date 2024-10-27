@@ -10,5 +10,5 @@ public interface CommentService {
     public boolean DeleteComment(Long rno);
 
     //comment 검색
-    public boolean SearchComment(String condition);
+    public boolean SearchComment(String search);
 }
