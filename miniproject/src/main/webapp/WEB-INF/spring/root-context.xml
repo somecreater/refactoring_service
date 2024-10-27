@@ -48,7 +48,7 @@
 	<mybatis-spring:scan base-package="org.webservice.mapper"/>
 	<context:component-scan base-package="org.webservice.config"></context:component-scan>
 	<context:component-scan base-package="org.webservice.service_1"></context:component-scan>
-	<context:component-scan base-package="org.webservice.aop"></context:component-scan>
+	<context:component-scan base-package="org.webservice.schedule"></context:component-scan>
 	<context:component-scan base-package="org.webservice.task"></context:component-scan>
 	<context:component-scan base-package="org.webservice.security"></context:component-scan>
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>

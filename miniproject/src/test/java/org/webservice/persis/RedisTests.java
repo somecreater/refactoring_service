@@ -3,13 +3,10 @@ package org.webservice.persis;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.webservice.entity.AlarmCacheEntity;
 import org.webservice.entity.BoardCacheEntity;
-import org.webservice.entity.PermissionEntity;
+import org.webservice.redis_repository.AlarmRepository;
 import org.webservice.redis_repository.BoardCacheRepository;
-import org.webservice.redis_repository.PermissionRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +22,7 @@ public class RedisTests {
     @Autowired
     private BoardCacheRepository boardCacheRepository;
     @Autowired
-    private PermissionRepository permissionRepository;
+    private AlarmRepository alarmRepository;
     //@Test
     /*
     public void testRedisConnection() {
@@ -55,12 +52,12 @@ public class RedisTests {
 
     @Test
     public void testRedisRepository2(){
-        PermissionEntity permission=PermissionEntity.builder().alarmid(11L).userid("tester").content("this is test").alarmtype("test").build();
-        permissionRepository.save(permission);
+        AlarmCacheEntity alarmCacheEntity=AlarmCacheEntity.builder().alarmid(11L).userid("tester").content("this is test").alarmtype("test").build();
+        alarmRepository.save(alarmCacheEntity);
 
-        PermissionEntity permission1=permissionRepository.findById(11L).get();
-        System.out.println(permission1.getAlarmtype());
-        System.out.println(permission1.getContent());
+        AlarmCacheEntity alarmCacheEntity1=alarmRepository.findById(11L).get();
+        System.out.println(alarmCacheEntity1.getAlarmtype());
+        System.out.println(alarmCacheEntity1.getContent());
     }
 
 }
