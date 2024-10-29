@@ -13,6 +13,10 @@ public interface BoardService {
     public boolean UpdateBoard(BoardEntity board, MultipartFile[] multipartFiles);
     public boolean DeleteBoard(Long bno);
 
+    //board 조회수와 추천수 업데이트(일정한 주기로 MySQL DB에 반영)
+    public void UpdateViewCount(BoardEntity boardEntity);
+    public boolean UpdateLikeCount(BoardEntity boardEntity);
+
     //board 리스트 읽어오기 및 검색
     public List<BoardEntity> SearchBoard(SearchDTO Search);
 }

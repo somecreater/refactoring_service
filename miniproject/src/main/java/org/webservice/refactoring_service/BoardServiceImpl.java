@@ -2,11 +2,14 @@ package org.webservice.refactoring_service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webservice.Innerdto.SearchDTO;
+import org.webservice.entity.BoardCacheEntity;
 import org.webservice.entity.BoardEntity;
+import org.webservice.redis_repository.BoardCacheRepository;
 import org.webservice.repository.BoardRepository;
 
 import java.util.List;
@@ -19,11 +22,25 @@ public class BoardServiceImpl implements BoardService{
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
+    private BoardCacheRepository boardCacheRepository;
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+    @Autowired
     private FileService fileService;
+    private final String Key="board_cache:";
 
     @Override
     public BoardEntity ReadBoard(Long bno) {
         Optional<BoardEntity> boardEntityOptional = boardRepository.findById(bno);
+
+        if(boardEntityOptional.orElse(null)!=null) {
+            try {
+                UpdateViewCount(boardEntityOptional.get());
+            } catch (Exception e) {
+                log.info("{} 번 게시물의 조회수 업데이트 실패", bno);
+            }
+        }
+
         return boardEntityOptional.orElse(null);
     }
 
@@ -55,6 +72,38 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public boolean DeleteBoard(Long bno) {
         return false;
+    }
+
+    @Transactional
+    @Override
+    public void UpdateViewCount(BoardEntity boardEntity){
+
+        String realKey=Key+boardEntity.getBno()+":viscount";
+        if (redisTemplate.opsForValue().get(realKey) == null) {
+            BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),0, 0);
+            boardCacheRepository.save(boardCacheEntity);
+        }else{
+            redisTemplate.opsForValue().increment(realKey, 1);
+        }
+    }
+
+    @Transactional
+    @Override
+    public boolean UpdateLikeCount(BoardEntity boardEntity){
+        try {
+            String realKey=Key+boardEntity.getBno()+":recommendation";
+            if (redisTemplate.opsForValue().get(realKey) == null) {
+                BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),0, 0);
+                boardCacheRepository.save(boardCacheEntity);
+            }else{
+                redisTemplate.opsForValue().increment(realKey, 1);
+            }
+
+        }catch(Exception e){
+            log.info("{} 번 게시글 추천수 업데이트 과정에서 오류 발생",boardEntity.getBno());
+            return false;
+        }
+        return true;
     }
 
     @Override
