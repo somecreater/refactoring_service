@@ -3,9 +3,10 @@ package org.webservice.refactoring_service;
 import org.webservice.entity.AuthEntity;
 import org.webservice.entity.BoardTypeEntity;
 
-public interface BoardmangeService {
+public interface BoardMangeService {
 
     //boardType 생성, 수정, 읽기, 삭제
+    public BoardTypeEntity MakeBoardType(String BoardName, String BoardSubject);
     public boolean CreateBoardType(BoardTypeEntity boardTypeEntity);
     public boolean UpdateBoardType(BoardTypeEntity boardTypeEntity);
     public BoardTypeEntity readBoardType(String BoardName);

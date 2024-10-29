@@ -29,7 +29,9 @@ public class AlarmCacheEntity {
     private String userid;
     private String alarmtype;
     private String content;
+    //관리자용 알림: true, 일반유저용 알림: false
     private boolean IsPriority;
+    //사용자의 확인여부
     private boolean ischecked;
 
 }

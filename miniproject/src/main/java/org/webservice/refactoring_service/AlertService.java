@@ -4,6 +4,7 @@ import org.webservice.Innerdto.AlarmDTO;
 
 public interface AlertService {
 
+    public AlarmDTO MakeAlarm(String AlarmType, String Content);
     public void SendAlarm(AlarmDTO alarmDTO);
     public boolean DeleteAlarm(String AlarmID);
 

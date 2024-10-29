@@ -13,7 +13,7 @@ public class AttachFileEntity {
     private String filename;
     private String uploadpath;
     private String uuid;
-    private boolean image;
+    private String type;
     private Long bno;
 
     @OneToOne
