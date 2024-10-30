@@ -10,6 +10,7 @@ import org.webservice.Innerdto.SearchDTO;
 import org.webservice.entity.AttachFileEntity;
 import org.webservice.repository.AttachFileRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,9 +21,19 @@ public class FileServiceImpl implements FileService{
     private AttachFileRepository attachFileRepository;
 
     @Override
-    public FileDTO MakeFileDTO(MultipartFile file){
+    public List<FileDTO> MakeFileDTO(MultipartFile[] filelist){
 
-        return new FileDTO();
+        //파일 정보를 저장하는 객체 리스트 생성
+        List<FileDTO> fileDTOS=new ArrayList<>();
+        for(MultipartFile multipartFile:filelist){
+            FileDTO fileDTO=new FileDTO();
+            fileDTO.setFileOrgName(multipartFile.getName());
+            fileDTO.setSize(multipartFile.getSize());
+            fileDTO.setPath("");
+            fileDTO.setFileType("");
+            fileDTOS.add(fileDTO);
+        }
+        return fileDTOS;
     }
 
     @Transactional

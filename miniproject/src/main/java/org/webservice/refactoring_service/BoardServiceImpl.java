@@ -44,6 +44,7 @@ public class BoardServiceImpl implements BoardService{
         return boardEntityOptional.orElse(null);
     }
 
+    //수정 필요
     @Transactional
     @Override
     public boolean InsertBoard(BoardEntity board, MultipartFile[] multipartFiles) {
@@ -62,18 +63,49 @@ public class BoardServiceImpl implements BoardService{
         return result;
     }
 
+    //수정 필요
     @Transactional
     @Override
     public boolean UpdateBoard(BoardEntity board, MultipartFile[] multipartFiles) {
-        return false;
+        try {
+            if(CheckBoard(board)) {
+                boardRepository.save(board);
+                if(multipartFiles.length!=0){
+
+                    fileService.UploadFile(multipartFiles,board.getBno());
+                }
+            }else{
+                return false;
+            }
+        }catch (Exception e){
+            log.info("{} 번 게시물 수정 과정에서 오류 발생!!",board.getBno());
+            return false;
+        }
+        return true;
     }
 
+    //파일 삭제 구현 필요
     @Transactional
     @Override
     public boolean DeleteBoard(Long bno) {
-        return false;
+        try{
+            String realKey=Key+bno+"*";
+            redisTemplate.delete(realKey);
+            boardRepository.deleteById(bno);
+
+        }catch (Exception e){
+            log.info("{} 번 게시글 삭제 과정에서 오류 발생",bno);
+            return false;
+        }
+        return true;
     }
 
+    public boolean CheckBoard(BoardEntity board){
+        return board.getBno() != null &&
+                board.getBordcategory() != null &&
+                board.getContent() != null &&
+                board.getTitle() != null;
+    }
     @Transactional
     @Override
     public void UpdateViewCount(BoardEntity boardEntity){
