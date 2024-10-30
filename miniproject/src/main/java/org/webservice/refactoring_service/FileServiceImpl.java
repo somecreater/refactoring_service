@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.webservice.Innerdto.FileDTO;
 import org.webservice.Innerdto.SearchDTO;
 import org.webservice.entity.AttachFileEntity;
+import org.webservice.entity.FileCacheEntity;
 import org.webservice.repository.AttachFileRepository;
 
 import java.util.ArrayList;
@@ -70,5 +71,13 @@ public class FileServiceImpl implements FileService{
     public boolean CheckFile(MultipartFile file) {
 
         return false;
+    }
+    public List<FileCacheEntity> UploadTempFile(MultipartFile[] filelist){
+        List<FileCacheEntity> fileCacheEntities=new ArrayList<>();
+        for(MultipartFile file:filelist){
+            //FileCacheEntity fileCacheEntity=new FileCacheEntity();
+
+        }
+        return fileCacheEntities;
     }
 }
