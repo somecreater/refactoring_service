@@ -112,7 +112,7 @@ public class BoardServiceImpl implements BoardService{
 
         String realKey=Key+boardEntity.getBno()+":viscount";
         if (redisTemplate.opsForValue().get(realKey) == null) {
-            BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),0, 0);
+            BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),1, 0);
             boardCacheRepository.save(boardCacheEntity);
         }else{
             redisTemplate.opsForValue().increment(realKey, 1);
@@ -125,7 +125,7 @@ public class BoardServiceImpl implements BoardService{
         try {
             String realKey=Key+boardEntity.getBno()+":recommendation";
             if (redisTemplate.opsForValue().get(realKey) == null) {
-                BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),0, 0);
+                BoardCacheEntity boardCacheEntity=new BoardCacheEntity(boardEntity.getBno(),0, 1);
                 boardCacheRepository.save(boardCacheEntity);
             }else{
                 redisTemplate.opsForValue().increment(realKey, 1);
