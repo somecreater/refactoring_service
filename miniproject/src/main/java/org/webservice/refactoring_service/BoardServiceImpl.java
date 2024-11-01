@@ -2,6 +2,7 @@ package org.webservice.refactoring_service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.webservice.entity.BoardEntity;
 import org.webservice.redis_repository.BoardCacheRepository;
 import org.webservice.repository.BoardRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,12 +49,12 @@ public class BoardServiceImpl implements BoardService{
     //수정 필요
     @Transactional
     @Override
-    public boolean InsertBoard(BoardEntity board, MultipartFile[] multipartFiles) {
+    public boolean InsertBoard(BoardEntity board, String TempBoardId, MultipartFile[] multipartFiles) {
         boolean result;
         try{
             Long newBno = boardRepository.save(board).getBno();
             if (multipartFiles.length!=0) {
-                fileService.UploadFile(multipartFiles,newBno);
+                fileService.UploadFile(multipartFiles,newBno,TempBoardId);
             }
             result=true;
         }catch (Exception e){
@@ -66,13 +68,12 @@ public class BoardServiceImpl implements BoardService{
     //수정 필요
     @Transactional
     @Override
-    public boolean UpdateBoard(BoardEntity board, MultipartFile[] multipartFiles) {
+    public boolean UpdateBoard(BoardEntity board, String TempBoardId,MultipartFile[] multipartFiles) {
         try {
             if(CheckBoard(board)) {
                 boardRepository.save(board);
                 if(multipartFiles.length!=0){
-
-                    fileService.UploadFile(multipartFiles,board.getBno());
+                    fileService.UploadFile(multipartFiles,board.getBno(),TempBoardId);
                 }
             }else{
                 return false;
@@ -91,6 +92,7 @@ public class BoardServiceImpl implements BoardService{
         try{
             String realKey=Key+bno+"*";
             redisTemplate.delete(realKey);
+            fileService.DeleteFile(bno);
             boardRepository.deleteById(bno);
 
         }catch (Exception e){
@@ -100,12 +102,14 @@ public class BoardServiceImpl implements BoardService{
         return true;
     }
 
+    //게시물의 필수 요소중 하나로도 누락되면 등록 불가 처리
     public boolean CheckBoard(BoardEntity board){
         return board.getBno() != null &&
                 board.getBordcategory() != null &&
                 board.getContent() != null &&
                 board.getTitle() != null;
     }
+
     @Transactional
     @Override
     public void UpdateViewCount(BoardEntity boardEntity){
@@ -139,7 +143,27 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardEntity> SearchBoard(SearchDTO Search) {
-        return List.of();
+    public List<BoardEntity> SearchBoard(SearchDTO Search, Pageable pageable) {
+        List<BoardEntity> boardEntityList=new ArrayList<>();
+        String datatype=Search.getDataType();
+        String searchtype=Search.getSearchType();
+        String content=Search.getContent();
+        if(datatype.compareTo("board")==0) {
+            switch (searchtype) {
+                case "title":
+                    boardEntityList=boardRepository.findByTitleContaining(content,pageable);
+                    break;
+                case "content":
+                    boardEntityList=boardRepository.findByContentContaining(content,pageable);
+                    break;
+                case "boardtype":
+                    boardEntityList=boardRepository.findByBordcategoryContaining(content,pageable);
+                    break;
+                case "userid":
+                    boardEntityList=boardRepository.findByWriterContaining(content,pageable);
+                    break;
+            }
+        }
+        return boardEntityList;
     }
 }

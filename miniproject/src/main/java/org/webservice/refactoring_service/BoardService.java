@@ -1,5 +1,6 @@
 package org.webservice.refactoring_service;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import org.webservice.Innerdto.SearchDTO;
 import org.webservice.entity.BoardEntity;
@@ -9,8 +10,8 @@ import java.util.List;
 public interface BoardService {
     //board 읽기, 입력, 수정, 삭제
     public BoardEntity ReadBoard(Long bno);
-    public boolean InsertBoard(BoardEntity board, MultipartFile[] multipartFiles);
-    public boolean UpdateBoard(BoardEntity board, MultipartFile[] multipartFiles);
+    public boolean InsertBoard(BoardEntity board, String TempBoardId, MultipartFile[] multipartFiles);
+    public boolean UpdateBoard(BoardEntity board, String TempBoardId, MultipartFile[] multipartFiles);
     public boolean DeleteBoard(Long bno);
 
     //입력된 게시물에 대한 유효성 검사
@@ -21,5 +22,5 @@ public interface BoardService {
     public boolean UpdateLikeCount(BoardEntity boardEntity);
 
     //board 리스트 읽어오기 및 검색
-    public List<BoardEntity> SearchBoard(SearchDTO Search);
+    public List<BoardEntity> SearchBoard(SearchDTO Search, Pageable pageable) ;
 }
