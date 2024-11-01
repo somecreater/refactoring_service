@@ -2,6 +2,9 @@ package org.webservice.refactoring_service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +12,15 @@ import org.webservice.Innerdto.FileDTO;
 import org.webservice.Innerdto.SearchDTO;
 import org.webservice.entity.AttachFileEntity;
 import org.webservice.entity.FileCacheEntity;
+import org.webservice.redis_repository.FileCacheRepository;
 import org.webservice.repository.AttachFileRepository;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -20,6 +28,10 @@ public class FileServiceImpl implements FileService{
 
     @Autowired
     private AttachFileRepository attachFileRepository;
+    @Autowired
+    private FileCacheRepository fileCacheRepository;
+    @Value("${file.upload.temp-dir}")
+    private String TempPath;
 
     @Override
     public List<FileDTO> MakeFileDTO(MultipartFile[] filelist){
@@ -37,9 +49,10 @@ public class FileServiceImpl implements FileService{
         return fileDTOS;
     }
 
+    //임시로 업로드된 파일을 MySQL DB에 등록하고, 실제 폴더에 업로드하는 메소드
     @Transactional
     @Override
-    public boolean UploadFile(MultipartFile[] file, Long bno) {
+    public boolean UploadFile(MultipartFile[] file, Long bno, String TempBoardId) {
         try{
                 for(MultipartFile multipartFile:file){
                 if(CheckFile(multipartFile)){
@@ -58,7 +71,8 @@ public class FileServiceImpl implements FileService{
 
     @Transactional
     @Override
-    public boolean DeleteFile(AttachFileEntity fileEntity) {
+    public boolean DeleteFile(Long bno) {
+        attachFileRepository.deleteByBno(bno);
         return false;
     }
 
@@ -69,14 +83,39 @@ public class FileServiceImpl implements FileService{
 
     @Override
     public boolean CheckFile(MultipartFile file) {
-
-        return false;
+        //일단 임시(확장자만 검사하거나 외부의 api 활용?)
+        return true;
     }
-    public List<FileCacheEntity> UploadTempFile(MultipartFile[] filelist){
-        List<FileCacheEntity> fileCacheEntities=new ArrayList<>();
-        for(MultipartFile file:filelist){
-            //FileCacheEntity fileCacheEntity=new FileCacheEntity();
 
+    //게시글 등록과정에서 업로드된 파일과 파일 정보를 redis Database, 임시 폴더에 저장
+    public List<FileCacheEntity> UploadTempFile(MultipartFile[] FileList,String TempBoardId){
+        List<FileCacheEntity> fileCacheEntities=new ArrayList<>();
+        String fileGroupId= TempBoardId;
+        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+        String Uploader= auth.getName();
+
+        try {
+            for (MultipartFile file : FileList) {
+                if (CheckFile(file)) {
+                    String fileOrgName = file.getName();
+                    String fileUUID = UUID.randomUUID().toString();
+                    String fileUUidName = fileUUID + "_" + fileOrgName;
+                    String filePath = TempPath + fileGroupId + "\\" + fileUUidName;
+                    String fileCacheId=fileGroupId+"_"+fileUUidName;
+                    File tempfile=new File(filePath);
+                    file.transferTo(tempfile);
+                    long filesize = file.getSize();
+                    String type = Files.probeContentType(tempfile.toPath());
+                    FileCacheEntity fileCacheEntity=new FileCacheEntity(fileCacheId
+                            ,fileGroupId,Uploader,fileUUID,fileOrgName,fileUUidName,
+                            filePath,filesize,type);
+                    fileCacheRepository.save(fileCacheEntity);
+                }
+
+            }
+        }
+        catch (Exception e){
+            log.info("파일 등록 과정에서 문제 발생");
         }
         return fileCacheEntities;
     }
