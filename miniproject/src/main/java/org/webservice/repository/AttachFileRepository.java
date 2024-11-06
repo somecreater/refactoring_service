@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface AttachFileRepository extends JpaRepository<AttachFileEntity,String> {
     List<AttachFileEntity> findByBno(Long bno);
+    List<AttachFileEntity> findByFiletypeContaining(String filetype);
+    List<AttachFileEntity> findByFilenameContaining(String filename);
     void deleteByBno(Long bno);
 }

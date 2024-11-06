@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 @SpringBootApplication(scanBasePackages = {
+        "org.webservice.schedule",
         "org.webservice.config",
         "org.webservice.refactoring_service",
         "org.webservice.security",

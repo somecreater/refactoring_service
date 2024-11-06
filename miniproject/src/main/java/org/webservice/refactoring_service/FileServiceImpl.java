@@ -72,13 +72,35 @@ public class FileServiceImpl implements FileService{
     @Transactional
     @Override
     public boolean DeleteFile(Long bno) {
-        attachFileRepository.deleteByBno(bno);
-        return false;
+        try {
+            //파일 삭제
+            attachFileRepository.deleteByBno(bno);
+        }catch (Exception e){
+            log.info("{} 번 게시물의 파일 삭제 중에 문제가 발생하였습니다.",bno);
+        }
+        return true;
     }
 
     @Override
     public List<AttachFileEntity> SearchFile(SearchDTO Search) {
-        return List.of();
+        List<AttachFileEntity> attachFileEntityList=new ArrayList<>();
+        String dataType=Search.getDataType();
+        String searchType=Search.getSearchType();
+        String content=Search.getContent();
+        if(dataType.compareTo("file")==0){
+            switch (searchType){
+                case "bno":
+                    attachFileEntityList=attachFileRepository.findByBno(Long.valueOf(content));
+                    break;
+                case "filetype":
+                    attachFileEntityList=attachFileRepository.findByFiletypeContaining(content);
+                    break;
+                case "filename":
+                    attachFileEntityList=attachFileRepository.findByFilenameContaining(content);
+                    break;
+            }
+        }
+        return attachFileEntityList;
     }
 
     @Override
@@ -97,6 +119,8 @@ public class FileServiceImpl implements FileService{
         try {
             for (MultipartFile file : FileList) {
                 if (CheckFile(file)) {
+                    //파일 업로드 코드
+
                     String fileOrgName = file.getName();
                     String fileUUID = UUID.randomUUID().toString();
                     String fileUUidName = fileUUID + "_" + fileOrgName;
